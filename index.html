@@ -12,23 +12,35 @@
   <main class="station">
     <div class="glow" aria-hidden="true"></div>
 
-    <button id="playerButton" class="player" type="button"
-      aria-label="Play radio station" aria-pressed="false">
-      <img class="gramophone" src="gramophonenobg.gif" alt="" draggable="false">
-      <span id="playerLabel" class="player-label">PLAY</span>
+    <div class="record-indicator" role="status" aria-label="Live broadcast">
+      <span class="record-lamp"></span>
+      <span>ON AIR</span>
+    </div>
+
+    <button id="gramophoneButton" class="gramophone-stage" type="button"
+      aria-label="Toggle radio station" aria-pressed="false">
+      <img class="gramophone" src="assets/gramophone.gif" alt="" draggable="false">
     </button>
 
-    <section class="console" aria-label="Radio controls">
+    <section class="hardware" aria-label="Radio controls">
+      <div class="transport">
+        <button id="playButton" class="hardware-button" type="button" aria-label="Play radio station">
+          <i class="play-icon" aria-hidden="true"></i><span>PLAY</span>
+        </button>
+        <button id="pauseButton" class="hardware-button" type="button" aria-label="Pause radio station" disabled>
+          <i class="pause-icon" aria-hidden="true"></i><span>PAUSE</span>
+        </button>
+      </div>
+
       <label class="volume-control" for="volume">
         <span>VOLUME</span>
-        <input id="volume" type="range" min="0" max="100" value="75">
         <span id="volumeKnob" class="volume-knob" aria-hidden="true"><i></i></span>
+        <input id="volume" type="range" min="0" max="100" value="75" aria-label="Volume">
       </label>
-      <span id="playerStatus" class="status" role="status" aria-live="polite">READY</span>
     </section>
 
-    <audio id="radioPlayer" preload="none"
-      src="https://s12.myradiostream.com:19856/listen.mp3"></audio>
+    <span id="playerStatus" class="status" role="status" aria-live="polite">READY</span>
+    <audio id="radioPlayer" preload="none" src="https://s12.myradiostream.com:19856/listen.mp3"></audio>
   </main>
 </body>
 </html>

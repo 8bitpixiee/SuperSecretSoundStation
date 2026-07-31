@@ -1,25 +1,30 @@
-:root { --red:#ff1d25; --deep:#65070b; --black:#000; }
+:root { --red:#ff1d25; --deep:#66080c; --metal:#353535; --black:#000; }
 * { box-sizing:border-box; }
 html,body { width:100%; min-height:100%; }
 body { margin:0; overflow:hidden; background:#000; color:var(--red); font-family:"Lucida Console","Courier New",monospace; }
 .station { min-height:100svh; display:grid; place-items:center; position:relative; isolation:isolate; }
-.station::after { content:""; position:fixed; inset:0; pointer-events:none; background:repeating-linear-gradient(0deg,transparent 0 3px,rgb(255 0 8 / 2%) 3px 4px),radial-gradient(ellipse at center,transparent 35%,rgb(0 0 0 / 75%) 92%); z-index:4; }
-.glow { position:absolute; width:min(55vw,540px); aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,rgb(255 0 8 / 34%) 0,rgb(120 0 4 / 16%) 38%,transparent 70%); filter:blur(24px); transition:transform .18s ease,opacity .18s ease; z-index:-1; }
-.player { width:min(96vw,900px); padding:0; border:0; background:transparent; color:var(--red); cursor:pointer; position:relative; transition:transform .18s steps(3,end); z-index:1; }
-.player:hover,.player:focus-visible { transform:scale(1.045); outline:none; }
-.player:hover~.console { border-color:var(--red); }
-.player:hover+.console {}
-.gramophone { display:block; width:100%; height:auto; image-rendering:pixelated; user-select:none; mix-blend-mode:screen; filter:drop-shadow(0 0 9px rgb(255 0 8 / 36%)); }
-.player-label { position:absolute; left:50%; bottom:5%; transform:translateX(-50%); min-width:104px; padding:11px 15px; border:1px solid var(--deep); background:rgb(0 0 0 / 90%); box-shadow:0 0 15px rgb(255 0 8 / 12%); font-size:.7rem; font-weight:700; letter-spacing:.22em; }
-.player:hover .player-label,.player:focus-visible .player-label { border-color:var(--red); box-shadow:0 0 24px rgb(255 0 8 / 35%); }
-.is-playing .player-label { animation:pulse 1.4s steps(2,end) infinite; }
-.console { position:fixed; right:clamp(18px,4vw,50px); bottom:clamp(18px,4vw,42px); display:flex; align-items:end; gap:22px; z-index:5; }
-.volume-control { display:grid; justify-items:center; gap:7px; color:#8e1116; font-size:.58rem; letter-spacing:.18em; cursor:pointer; }
-.volume-control input { position:absolute; opacity:0; width:1px; height:1px; }
-.volume-knob { width:48px; height:48px; border:3px solid #8e1116; border-radius:50%; display:block; position:relative; background:radial-gradient(circle at 38% 35%,#260204 0,#080000 56%,#000 70%); box-shadow:inset 0 0 0 3px #000,0 0 14px rgb(255 0 8 / 15%); transform:rotate(135deg); }
+.station::after { content:""; position:fixed; inset:0; z-index:8; pointer-events:none; background:repeating-linear-gradient(0deg,transparent 0 3px,rgb(255 0 8 / 2%) 3px 4px); }
+.glow { position:absolute; left:50%; top:48%; translate:-50% -50%; width:min(92vw,900px); height:min(88vw,820px); border-radius:50%; z-index:-1; background:radial-gradient(circle,rgb(255 0 8 / 42%) 0,rgb(150 0 5 / 23%) 32%,rgb(80 0 3 / 9%) 54%,transparent 74%); filter:blur(34px); transition:scale .18s steps(3,end),opacity .18s ease; }
+.record-indicator { position:fixed; top:30px; right:36px; display:flex; align-items:center; gap:10px; padding:10px 13px; border:2px solid #3d3d3d; background:linear-gradient(#292929,#0b0b0b); box-shadow:inset 0 0 0 2px #000,3px 3px 0 #090909; color:#a5a5a5; font-size:.62rem; letter-spacing:.16em; z-index:10; }
+.record-lamp { width:13px; height:13px; border:2px solid #5b0508; border-radius:50%; background:var(--red); box-shadow:0 0 12px var(--red); animation:record-blink 1.2s steps(2,end) infinite; }
+.gramophone-stage { position:absolute; left:50%; top:46%; translate:-50% -50%; width:min(78vw,680px); height:min(68vh,650px); padding:0; overflow:hidden; border:0; background:transparent; cursor:pointer; z-index:1; transition:scale .16s steps(3,end); }
+.gramophone-stage:hover,.gramophone-stage:focus-visible { scale:1.055; outline:none; }
+.gramophone-stage:hover~.hardware .hardware-button { border-color:#555; }
+.gramophone { position:absolute; left:50%; top:50%; width:205%; height:auto; translate:-75% -52%; image-rendering:pixelated; user-select:none; mix-blend-mode:screen; filter:drop-shadow(0 0 11px rgb(255 0 8 / 42%)); }
+.hardware { position:fixed; left:50%; bottom:clamp(24px,5vh,58px); translate:-50% 0; display:flex; align-items:end; gap:30px; z-index:10; }
+.transport { display:flex; gap:12px; }
+.hardware-button { min-width:92px; height:52px; display:flex; align-items:center; justify-content:center; gap:10px; padding:0 14px; border:3px solid #3a3a3a; border-top-color:#666; border-left-color:#555; background:linear-gradient(#313131,#101010); color:#d0d0d0; box-shadow:inset 0 0 0 2px #080808,4px 5px 0 #050505; font:700 .62rem "Lucida Console","Courier New",monospace; letter-spacing:.13em; cursor:pointer; }
+.hardware-button:hover:not(:disabled),.hardware-button:focus-visible { border-color:#888; color:#fff; outline:none; }
+.hardware-button:active:not(:disabled),.hardware-button.is-active { translate:2px 3px; border-color:var(--deep); color:var(--red); box-shadow:inset 0 0 12px rgb(255 0 8 / 22%),2px 2px 0 #050505; }
+.hardware-button:disabled { opacity:.38; cursor:not-allowed; }
+.play-icon { width:0; height:0; border-top:7px solid transparent; border-bottom:7px solid transparent; border-left:11px solid currentColor; }
+.pause-icon { width:12px; height:14px; border-left:4px solid currentColor; border-right:4px solid currentColor; }
+.volume-control { width:62px; position:relative; display:grid; justify-items:center; gap:8px; color:#8e1116; font-size:.55rem; letter-spacing:.13em; cursor:ew-resize; }
+.volume-knob { width:54px; height:54px; border:4px solid #3b3b3b; border-top-color:#686868; border-radius:50%; display:block; position:relative; background:radial-gradient(circle at 38% 32%,#474747 0,#191919 43%,#060606 70%); box-shadow:inset 0 0 0 3px #050505,4px 4px 0 #050505; transform:rotate(67.5deg); pointer-events:none; }
 .volume-knob i { position:absolute; width:3px; height:15px; top:4px; left:50%; translate:-50% 0; background:var(--red); box-shadow:0 0 5px var(--red); }
+.volume-control input { position:absolute; left:0; bottom:0; width:62px; height:54px; margin:0; opacity:0; cursor:ew-resize; }
 .volume-control:focus-within .volume-knob { outline:1px dashed var(--red); outline-offset:5px; }
-.status { min-width:86px; padding-bottom:4px; color:#8e1116; font-size:.6rem; letter-spacing:.16em; }
-@keyframes pulse { 50% { color:#fff; text-shadow:0 0 8px var(--red); } }
-@media(max-width:600px){ .player{width:112vw}.player-label{bottom:2%;scale:.88}.console{right:18px;bottom:18px}.glow{width:78vw}.volume-knob{width:42px;height:42px} }
-@media(prefers-reduced-motion:reduce){ .player,.glow{transition:none}.is-playing .player-label{animation:none} }
+.status { position:fixed; left:32px; bottom:30px; color:#721015; font-size:.58rem; letter-spacing:.17em; z-index:10; }
+@keyframes record-blink { 50% { opacity:.22; box-shadow:none; } }
+@media(max-width:650px){ .record-indicator{top:18px;right:18px}.gramophone-stage{top:45%;width:100vw;height:66vh}.gramophone{width:225%;translate:-75% -52%}.glow{width:125vw;height:115vw}.hardware{bottom:26px;gap:18px}.hardware-button{min-width:76px;height:46px;padding:0 10px;font-size:.54rem}.volume-knob{width:48px;height:48px}.volume-control input{height:48px} }
+@media(prefers-reduced-motion:reduce){ .record-lamp{animation:none}.gramophone-stage,.glow{transition:none} }
