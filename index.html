@@ -1,83 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-
-  <meta
-    name="description"
-    content="Super Secret Sound Station — live radio."
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Super Secret Sound Station — live radio.">
   <title>Super Secret Sound Station</title>
-
-  <link rel="icon" href="logo2.png">
   <link rel="stylesheet" href="style.css">
-
   <script src="script.js" defer></script>
 </head>
-
 <body>
-  <header class="station-header">
-    <img
-      class="station-logo"
-      src="logo2.png"
-      alt="Super Secret Sound Station"
-    >
-
-    <div class="station-title" aria-hidden="true">
-      <strong>SUPER SECRET</strong>
-      <span>SOUND STATION</span>
-    </div>
-  </header>
-
   <main class="station">
-    <div class="live-indicator" aria-hidden="true">
-      <span class="live-light"></span>
-      LIVE SIGNAL
-    </div>
+    <div class="glow" aria-hidden="true"></div>
 
-    <button
-      id="playerButton"
-      class="player"
-      type="button"
-      aria-label="Play radio station"
-      aria-pressed="false"
-    >
-      <img
-        class="gramophone"
-        src="ezgif.com-gif-maker.gif"
-        alt=""
-        draggable="false"
-      >
-
-      <span id="playerLabel" class="player-label">
-        ▶ PLAY
-      </span>
+    <button id="playerButton" class="player" type="button"
+      aria-label="Play radio station" aria-pressed="false">
+      <img class="gramophone" src="assets/gramophone.gif" alt="" draggable="false">
+      <span id="playerLabel" class="player-label">PLAY</span>
     </button>
 
-    <audio
-      id="radioPlayer"
-      preload="none"
-      src="https://s12.myradiostream.com:19856/listen.mp3"
-    ></audio>
+    <section class="console" aria-label="Radio controls">
+      <label class="volume-control" for="volume">
+        <span>VOLUME</span>
+        <input id="volume" type="range" min="0" max="100" value="75">
+        <span id="volumeKnob" class="volume-knob" aria-hidden="true"><i></i></span>
+      </label>
+      <span id="playerStatus" class="status" role="status" aria-live="polite">READY</span>
+    </section>
 
-    <p
-      id="playerStatus"
-      class="status-message"
-      role="status"
-      aria-live="polite"
-    ></p>
+    <audio id="radioPlayer" preload="none"
+      src="https://s12.myradiostream.com:19856/listen.mp3"></audio>
   </main>
-
-  <noscript>
-    <p class="noscript-message">
-      JavaScript must be enabled to play the station.
-    </p>
-  </noscript>
 </body>
 </html>
