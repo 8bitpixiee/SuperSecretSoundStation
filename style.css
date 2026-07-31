@@ -11,7 +11,7 @@ body { margin:0; overflow:hidden; background:#000; color:var(--red); font-family
 .gramophone-hitbox:focus-visible { outline:1px dashed var(--red); outline-offset:8px; }
 .gramophone-stage { position:absolute; left:50%; top:46%; translate:-50% -50%; width:min(78vw,680px); height:min(68vh,650px); padding:0; overflow:visible; border:0; background:transparent; pointer-events:none; z-index:1; transition:scale .16s steps(3,end); transform-origin:center; }
 .gramophone-hitbox:hover + .gramophone-stage { scale:1.035; }
-.gramophone-stage.is-playing { animation:gramophone-breathe 4.8s ease-in-out infinite; }
+.gramophone-stage.is-playing { animation:gramophone-breathe 2.8s ease-in-out infinite; }
 .gramophone { position:absolute; left:50%; top:50%; width:205%; height:auto; translate:-75% -52%; image-rendering:pixelated; user-select:none; filter:drop-shadow(0 0 11px rgb(255 0 8 / 42%)); }
 .music-notes { position:absolute; left:28%; top:13%; width:1px; height:1px; z-index:2; }
 .music-note { position:absolute; width:clamp(18px,2vw,30px); height:auto; opacity:0; image-rendering:pixelated; filter:drop-shadow(0 0 5px rgb(255 29 37 / 60%)); }
@@ -34,7 +34,7 @@ body { margin:0; overflow:hidden; background:#000; color:var(--red); font-family
 .volume-control:focus-within .volume-knob { outline:1px dashed var(--red); outline-offset:5px; }
 .status { position:fixed; left:32px; bottom:30px; color:#721015; font-size:.58rem; letter-spacing:.17em; z-index:10; }
 @keyframes record-blink { 50% { opacity:.22; box-shadow:none; } }
-@keyframes gramophone-breathe { 0%,100% { scale:1; } 50% { scale:1.025; } }
+@keyframes gramophone-breathe { 0%,100% { scale:1; } 50% { scale:1.06; } }
 @keyframes note-float { 0% { opacity:0; translate:0 0; scale:.65; rotate:-8deg; } 12% { opacity:.9; } 72% { opacity:.75; } 100% { opacity:0; translate:-95px -165px; scale:1.15; rotate:12deg; } }
 @media(max-width:650px){ .record-indicator{top:18px;right:18px}.gramophone-hitbox{top:45%;width:min(70vw,360px);height:55vh}.gramophone-stage{top:45%;width:100vw;height:66vh}.gramophone{width:225%;translate:-75% -52%}.music-notes{left:30%;top:16%}.glow{width:125vw;height:115vw}.hardware{bottom:26px;gap:18px}.hardware-button{min-width:76px;height:46px;padding:0 10px;font-size:.54rem}.volume-knob{width:48px;height:48px}.volume-control input{height:48px} }
 @media(prefers-reduced-motion:reduce){ .record-lamp{animation:none}.gramophone-stage,.glow{transition:none}.gramophone-stage.is-playing,.gramophone-stage.is-playing .music-note{animation:none} }
