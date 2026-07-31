@@ -1,13 +1,13 @@
 :root { --red:#ff1d25; --deep:#66080c; --metal:#353535; --black:#000; }
 * { box-sizing:border-box; }
 html,body { width:100%; min-height:100%; }
-body { margin:0; overflow:hidden; background:#000; color:var(--red); font-family:"Lucida Console","Courier New",monospace; }
+body { margin:0; overflow:hidden; background:#000; color:var(--red); font-family:"Lucida Console","Courier New",monospace; cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M3 2v17l4-4 3 7 4-2-3-7h6z' fill='%23131313' stroke='%23b31920' stroke-width='1.5'/%3E%3C/svg%3E") 3 2,auto; }
 .station { min-height:100svh; display:grid; place-items:center; position:relative; isolation:isolate; }
 .station::after { content:""; position:fixed; inset:0; z-index:8; pointer-events:none; background:repeating-linear-gradient(0deg,transparent 0 3px,rgb(255 0 8 / 2%) 3px 4px); }
 .glow { position:absolute; left:50%; top:48%; translate:-50% -50%; width:min(92vw,900px); height:min(88vw,820px); border-radius:50%; z-index:-1; background:radial-gradient(circle,rgb(255 0 8 / 42%) 0,rgb(150 0 5 / 23%) 32%,rgb(80 0 3 / 9%) 54%,transparent 74%); filter:blur(34px); transition:scale .18s steps(3,end),opacity .18s ease; }
 .record-indicator { position:fixed; top:30px; right:36px; display:flex; align-items:center; gap:10px; padding:10px 13px; border:2px solid #3d3d3d; background:linear-gradient(#292929,#0b0b0b); box-shadow:inset 0 0 0 2px #000,3px 3px 0 #090909; color:#a5a5a5; font-size:.62rem; letter-spacing:.16em; z-index:10; }
 .record-lamp { width:13px; height:13px; border:2px solid #5b0508; border-radius:50%; background:var(--red); box-shadow:0 0 12px var(--red); animation:record-blink 1.2s steps(2,end) infinite; }
-.gramophone-hitbox { appearance:none; -webkit-appearance:none; position:absolute; left:50%; top:46%; translate:-50% -50%; width:min(42vw,390px); height:min(58vh,560px); padding:0; border:0; outline:0; background:transparent; box-shadow:none; cursor:pointer; z-index:3; }
+.gramophone-hitbox { appearance:none; -webkit-appearance:none; position:absolute; left:50%; top:46%; translate:-50% -50%; width:min(42vw,390px); height:min(58vh,560px); padding:0; border:0; outline:0; background:transparent; box-shadow:none; cursor:inherit; z-index:3; }
 .gramophone-hitbox:focus-visible { outline:1px dashed var(--red); outline-offset:8px; }
 .gramophone-stage { position:absolute; left:50%; top:46%; translate:-50% -50%; width:min(78vw,680px); height:min(68vh,650px); padding:0; overflow:visible; border:0; background:transparent; pointer-events:none; z-index:1; transition:scale .16s steps(3,end); transform-origin:center; }
 .gramophone-hitbox:hover + .gramophone-stage { scale:1.035; }
@@ -27,10 +27,10 @@ body { margin:0; overflow:hidden; background:#000; color:var(--red); font-family
 .hardware-button:disabled { opacity:.38; cursor:not-allowed; }
 .play-icon { width:0; height:0; border-top:7px solid transparent; border-bottom:7px solid transparent; border-left:11px solid currentColor; }
 .pause-icon { width:12px; height:14px; border-left:4px solid currentColor; border-right:4px solid currentColor; }
-.volume-control { width:62px; position:relative; display:grid; justify-items:center; gap:8px; color:#8e1116; font-size:.55rem; letter-spacing:.13em; cursor:ew-resize; }
+.volume-control { width:62px; position:relative; display:grid; justify-items:center; gap:8px; color:#8e1116; font-size:.55rem; letter-spacing:.13em; cursor:inherit; }
 .volume-knob { width:54px; height:54px; border:4px solid #3b3b3b; border-top-color:#686868; border-radius:50%; display:block; position:relative; background:radial-gradient(circle at 38% 32%,#474747 0,#191919 43%,#060606 70%); box-shadow:inset 0 0 0 3px #050505,4px 4px 0 #050505; transform:rotate(67.5deg); pointer-events:none; }
 .volume-knob i { position:absolute; width:3px; height:15px; top:4px; left:50%; translate:-50% 0; background:var(--red); box-shadow:0 0 5px var(--red); }
-.volume-control input { position:absolute; left:0; bottom:0; width:62px; height:54px; margin:0; opacity:0; cursor:ew-resize; }
+.volume-control input { position:absolute; left:0; bottom:0; width:62px; height:54px; margin:0; opacity:0; cursor:inherit; }
 .volume-control:focus-within .volume-knob { outline:1px dashed var(--red); outline-offset:5px; }
 .status { position:fixed; left:32px; bottom:30px; color:#721015; font-size:.58rem; letter-spacing:.17em; z-index:10; }
 @keyframes record-blink { 50% { opacity:.22; box-shadow:none; } }

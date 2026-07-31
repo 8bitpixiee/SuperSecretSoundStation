@@ -1,7 +1,5 @@
 const gramophone = document.getElementById("gramophoneButton");
 const gramophoneStage = document.getElementById("gramophoneStage");
-const playButton = document.getElementById("playButton");
-const pauseButton = document.getElementById("pauseButton");
 const status = document.getElementById("playerStatus");
 const audio = document.getElementById("radioPlayer");
 const volume = document.getElementById("volume");
@@ -18,10 +16,6 @@ function updateVolume() {
 function setPlaying(playing) {
   gramophone.setAttribute("aria-pressed", String(playing));
   gramophoneStage.classList.toggle("is-playing", playing);
-  playButton.disabled = playing;
-  pauseButton.disabled = !playing;
-  playButton.classList.toggle("is-active", playing);
-  pauseButton.classList.toggle("is-active", !playing);
   status.textContent = playing ? "LIVE SIGNAL" : "READY";
 }
 
@@ -44,8 +38,6 @@ function pauseStation() {
 }
 
 gramophone.addEventListener("click", () => audio.paused ? playStation() : pauseStation());
-playButton.addEventListener("click", playStation);
-pauseButton.addEventListener("click", pauseStation);
 volume.addEventListener("input", updateVolume);
 volume.addEventListener("change", updateVolume);
 audio.addEventListener("pause", () => setPlaying(false));
