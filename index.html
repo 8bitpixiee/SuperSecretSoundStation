@@ -14,13 +14,20 @@
 
     <div class="record-indicator" role="status" aria-label="Live broadcast">
       <span class="record-lamp"></span>
-      <span>BROADCASTING LIVE</span>
+      <span>ON AIR</span>
     </div>
 
-    <button id="gramophoneButton" class="gramophone-stage" type="button"
-      aria-label="Toggle radio station" aria-pressed="false">
+    <button id="gramophoneButton" class="gramophone-hitbox" type="button"
+      aria-label="Toggle radio station" aria-pressed="false"></button>
+
+    <div id="gramophoneStage" class="gramophone-stage" aria-hidden="true">
       <img class="gramophone" src="gramophonenobg.gif" alt="" draggable="false">
-    </button>
+      <div class="music-notes">
+        <img class="music-note note-one" src="musicnot1.png" alt="" draggable="false">
+        <img class="music-note note-two" src="musicnot2.png" alt="" draggable="false">
+        <img class="music-note note-three" src="musicnot3.png" alt="" draggable="false">
+      </div>
+    </div>
 
     <section class="hardware" aria-label="Radio controls">
       <div class="transport">

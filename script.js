@@ -1,4 +1,5 @@
 const gramophone = document.getElementById("gramophoneButton");
+const gramophoneStage = document.getElementById("gramophoneStage");
 const playButton = document.getElementById("playButton");
 const pauseButton = document.getElementById("pauseButton");
 const status = document.getElementById("playerStatus");
@@ -16,6 +17,7 @@ function updateVolume() {
 
 function setPlaying(playing) {
   gramophone.setAttribute("aria-pressed", String(playing));
+  gramophoneStage.classList.toggle("is-playing", playing);
   playButton.disabled = playing;
   pauseButton.disabled = !playing;
   playButton.classList.toggle("is-active", playing);
