@@ -34,7 +34,22 @@ if (window.matchMedia("(pointer:fine)").matches && customCursor) {
 }
 
 document.querySelectorAll(".home-trigger").forEach(button => button.addEventListener("click", () => location.href = "index.html"));
-document.querySelectorAll(".station-trigger").forEach(button => button.addEventListener("click", () => location.href = "station.html"));
+function openStationPlayer() {
+  const width = Math.min(900, window.screen.availWidth);
+  const height = Math.min(900, window.screen.availHeight);
+  const left = Math.max(0, Math.round((window.screen.availWidth - width) / 2));
+  const top = Math.max(0, Math.round((window.screen.availHeight - height) / 2));
+  return window.open(
+    "station.html",
+    "superSecretStationPlayer",
+    `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+}
+
+document.querySelectorAll(".station-trigger").forEach(button => button.addEventListener("click", () => {
+  const playerWindow = openStationPlayer();
+  if (!playerWindow) location.href = "station.html";
+}));
 
 const panel = document.getElementById("dpadPanel");
 if (panel) {
@@ -93,7 +108,8 @@ if (panel) {
   function enterDirection(direction) {
     if (!startedAt) startTimer();
     sequence.push(direction);
-    readout.textContent = sequence.map(direction => direction[0]).join(" ");
+    // Never reveal the directional access code on-screen while it is entered.
+    readout.textContent = sequence.map(() => "★").join(" ");
     if (sequence.length === 8) {
       clearInterval(timer);
       timer = null;
@@ -109,6 +125,13 @@ if (panel) {
   }
 
   async function submitUnlock(passcode = "") {
+    // Open during the user's click/key event so popup blockers allow it.
+    // The named window is reused if the station is already open.
+    const playerWindow = destination === "station" ? window.open(
+    "",
+      "superSecretStationPlayer",
+      `popup=yes,width=${Math.min(900, window.screen.availWidth)},height=${Math.min(900, window.screen.availHeight)},resizable=yes,scrollbars=yes`
+    ) : null;
     readout.textContent = "SEARCHING...";
     try {
       const response = await fetch("/api/unlock", {
@@ -117,10 +140,30 @@ if (panel) {
         body:JSON.stringify({ destination, sequence, passcode })
       });
       const result = await response.json();
-      if (!response.ok) { fail(); readout.textContent = result.error || FAILURE_MESSAGE; return; }
+      if (!response.ok) {
+        if (playerWindow) playerWindow.close();
+        fail();
+        readout.textContent = result.error || FAILURE_MESSAGE;
+        return;
+      }
       readout.textContent = "PATH FOUND.";
-      setTimeout(() => location.href = `${destination}.html`, 450);
-    } catch { fail(); }
+      if (destination === "station") {
+        setTimeout(() => {
+          if (playerWindow) {
+            playerWindow.location.replace("station.html");
+            playerWindow.focus();
+          } else {
+            location.href = "station.html";
+          }
+          panel.close();
+        }, 450);
+      } else {
+        setTimeout(() => location.href = `${destination}.html`, 450);
+      }
+    } catch {
+      if (playerWindow) playerWindow.close();
+      fail();
+    }
   }
 
   keys.forEach(key => key.addEventListener("click", () => enterDirection(key.dataset.direction)));
