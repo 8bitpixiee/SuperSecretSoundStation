@@ -36,7 +36,7 @@ if (panel) {
     startedAt = 0;
     clearInterval(timer);
     timer = null;
-    timerText.textContent = "10.0";
+    timerText.textContent = "20.0";
     readout.textContent = message;
   }
 
@@ -49,7 +49,7 @@ if (panel) {
   function startTimer() {
     startedAt = Date.now();
     timer = setInterval(() => {
-      const remaining = Math.max(0, 10000 - (Date.now() - startedAt));
+      const remaining = Math.max(0, 20000 - (Date.now() - startedAt));
       timerText.textContent = (remaining / 1000).toFixed(1);
       if (remaining <= 0) fail();
     }, 100);
@@ -60,13 +60,14 @@ if (panel) {
       destination = button.dataset.destination;
       title.textContent = destination === "vault" ? "VAULT FREQUENCY" : "STATION FREQUENCY";
       resetInput();
+      if (customCursor) panel.appendChild(customCursor);
       panel.showModal();
     });
   });
 
-  keys.forEach(key => key.addEventListener("click", () => {
+  function enterDirection(direction) {
     if (!startedAt) startTimer();
-    sequence.push(key.dataset.direction);
+    sequence.push(direction);
     readout.textContent = sequence.map(direction => direction[0]).join(" ");
     const expected = ACCESS_CODES[destination];
     if (sequence.length === expected.length) {
@@ -79,9 +80,22 @@ if (panel) {
         fail();
       }
     }
-  }));
+  }
+
+  keys.forEach(key => key.addEventListener("click", () => enterDirection(key.dataset.direction)));
+  document.addEventListener("keydown", (event) => {
+    if (!panel.open) return;
+    const directions = { ArrowUp:"UP", ArrowDown:"DOWN", ArrowLeft:"LEFT", ArrowRight:"RIGHT" };
+    const direction = directions[event.key];
+    if (!direction) return;
+    event.preventDefault();
+    enterDirection(direction);
+  });
   resetButton.addEventListener("click", () => resetInput());
-  panel.addEventListener("close", () => resetInput());
+  panel.addEventListener("close", () => {
+    resetInput();
+    if (customCursor) document.body.prepend(customCursor);
+  });
 }
 
 if (page === "station" && sessionStorage.getItem("access_station") !== "granted") location.replace("index.html");
