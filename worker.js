@@ -61,12 +61,12 @@ export default {
       if (rate.blocked) return json({ error:"Too many wrong paths. Try again in a minute." }, 429);
       let body;
       try { body = await request.json(); } catch { return json({ error:"Invalid request." }, 400); }
-      const { destination, sequence, passcode = "" } = body;
+      const { destination, sequence } = body;
       if (!COOKIE_NAMES[destination] || !Array.isArray(sequence) || sequence.length !== 8) return json({ error:"Invalid path." }, 400);
       const expectedCode = env[SECRET_NAMES[destination]];
-      if (!expectedCode || !env.SESSION_SECRET || (destination === "settings" && !env.SETTINGS_PASSCODE)) return json({ error:"Access secrets are not configured." }, 503);
+      if (!expectedCode || !env.SESSION_SECRET) return json({ error:"Access secrets are not configured." }, 503);
       const enteredCode = sequence.map(direction => String(direction).toUpperCase()[0]).join("");
-      const accepted = safeEqual(enteredCode, expectedCode) && (destination !== "settings" || safeEqual(String(passcode), env.SETTINGS_PASSCODE));
+      const accepted = safeEqual(enteredCode, expectedCode);
       if (!accepted) {
         await env.STATION_STATE.put(rate.key, String(rate.attempts + 1), { expirationTtl:60 });
         return json({ error:"If you don't know where you want to go, then it doesn't matter which path you take." }, 401);

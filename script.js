@@ -35,15 +35,7 @@ if (window.matchMedia("(pointer:fine)").matches && customCursor) {
 
 document.querySelectorAll(".home-trigger").forEach(button => button.addEventListener("click", () => location.href = "index.html"));
 function openStationPlayer() {
-  const width = Math.min(900, window.screen.availWidth);
-  const height = Math.min(900, window.screen.availHeight);
-  const left = Math.max(0, Math.round((window.screen.availWidth - width) / 2));
-  const top = Math.max(0, Math.round((window.screen.availHeight - height) / 2));
-  return window.open(
-    "station.html",
-    "superSecretStationPlayer",
-    `popup=yes,width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
-  );
+  return window.open("station.html", "superSecretStationPlayer");
 }
 
 document.querySelectorAll(".station-trigger").forEach(button => button.addEventListener("click", () => {
@@ -113,31 +105,22 @@ if (panel) {
     if (sequence.length === 8) {
       clearInterval(timer);
       timer = null;
-      if (destination === "settings") {
-        dpadControls.hidden = true;
-        resetButton.hidden = true;
-        passcodeBox.hidden = false;
-        passcodeInput.focus();
-      } else {
-        submitUnlock();
-      }
+      submitUnlock();
     }
   }
 
-  async function submitUnlock(passcode = "") {
+  async function submitUnlock() {
     // Open during the user's click/key event so popup blockers allow it.
     // The named window is reused if the station is already open.
-    const playerWindow = destination === "station" ? window.open(
-    "",
-      "superSecretStationPlayer",
-      `popup=yes,width=${Math.min(900, window.screen.availWidth)},height=${Math.min(900, window.screen.availHeight)},resizable=yes,scrollbars=yes`
-    ) : null;
+    const playerWindow = destination === "station"
+      ? window.open("", "superSecretStationPlayer")
+      : null;
     readout.textContent = "SEARCHING...";
     try {
       const response = await fetch("/api/unlock", {
         method:"POST",
         headers:{ "Content-Type":"application/json" },
-        body:JSON.stringify({ destination, sequence, passcode })
+        body:JSON.stringify({ destination, sequence })
       });
       const result = await response.json();
       if (!response.ok) {
@@ -176,8 +159,6 @@ if (panel) {
     enterDirection(direction);
   });
   resetButton.addEventListener("click", () => resetInput());
-  passcodeSubmit.addEventListener("click", () => submitUnlock(passcodeInput.value));
-  passcodeInput.addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); submitUnlock(event.currentTarget.value); } });
   panel.addEventListener("close", () => {
     resetInput();
     if (customCursor) document.body.prepend(customCursor);
