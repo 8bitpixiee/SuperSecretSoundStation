@@ -65,3 +65,56 @@ body.cursor-ready,.cursor-ready button,.cursor-ready input,.cursor-ready label {
 @media(max-width:650px){ .record-indicator{top:18px;right:18px;max-width:52vw}.dpad-logo-button{top:14px;left:14px;width:92px}.dpad-logo-button span{font-size:.44rem}.gramophone-hitbox{top:45%;width:min(70vw,360px);height:55vh}.gramophone-stage{top:45%;width:100vw;height:66vh}.gramophone{width:225%;translate:-75% -52%}.music-notes{left:30%;top:16%}.glow{width:125vw;height:115vw}.hardware{left:calc(50% + 91px);bottom:50px;gap:18px}.hardware-button{min-width:76px;height:46px;padding:0 10px;font-size:.54rem}.volume-knob{width:48px;height:48px}.volume-control input{height:48px}.site-credit{bottom:7px;width:96vw;gap:5px;font-size:.42rem;letter-spacing:.06em}.credit-logo{width:24px;height:24px}.wirekittie-logo{width:35px}.art-credit{padding-left:5px}.status{left:14px;bottom:42px}.custom-cursor{display:none} }
 @media(prefers-reduced-motion:reduce){ .record-lamp{animation:none}.gramophone-stage,.glow{transition:none}.gramophone-stage.is-playing,.gramophone-stage.is-playing .music-note{animation:none} }
 .gramophone { display:block; background:transparent !important; }
+
+/* Three-page access system */
+.mystery-page,.vault-page { background:#000; }
+.mystery-void { min-height:100svh; background:#000; }
+.route-arrow { position:fixed; top:50%; translate:0 -50%; z-index:15; width:48px; height:86px; border:1px solid #171717; background:linear-gradient(90deg,#030303,#101010); color:#333; font:400 1.35rem "Lucida Console","Courier New",monospace; opacity:.62; transition:color .18s,opacity .18s,border-color .18s; }
+.route-arrow:hover,.route-arrow:focus-visible { color:#a31218; opacity:1; border-color:#4e0c0f; outline:none; }
+.route-left { left:0; border-left:0; }
+.route-right { right:0; border-right:0; background:linear-gradient(-90deg,#030303,#101010); }
+.portal-footer { position:fixed; left:0; right:0; bottom:0; height:120px; z-index:20; display:grid; grid-template-columns:minmax(110px,1fr) auto minmax(110px,1fr); align-items:end; padding:0 clamp(16px,3vw,48px) 10px; pointer-events:none; }
+.portal-logo { justify-self:start; width:clamp(84px,9vw,132px); height:105px; padding:0; border:0; background:transparent; pointer-events:auto; opacity:.86; }
+.portal-logo img { width:100%; height:100%; object-fit:contain; filter:grayscale(.18) brightness(.75) drop-shadow(0 0 8px rgb(255 0 8 / 18%)); transition:scale .17s steps(3,end),filter .17s,opacity .17s; }
+.portal-logo:hover img,.portal-logo:focus-visible img { scale:1.07; filter:grayscale(0) brightness(1) drop-shadow(0 0 14px rgb(255 0 8 / 45%)); }
+.portal-logo:focus-visible { outline:1px dashed #8e1116; outline-offset:3px; }
+.portal-logo-mirrored { justify-self:end; }
+.portal-logo-mirrored img { transform:scaleX(-1); }
+.credit-stack { align-self:end; padding-bottom:4px; display:grid; justify-items:center; gap:4px; color:#555; text-align:center; white-space:nowrap; font:700 clamp(.48rem,.72vw,.64rem) "Lucida Console","Courier New",monospace; letter-spacing:.12em; text-transform:uppercase; text-shadow:2px 2px 0 #111; pointer-events:auto; }
+.credit-stack strong { color:#8e1116; font-weight:inherit; }
+.credit-marks { display:flex; align-items:center; justify-content:center; gap:8px; }
+.credit-marks img { width:24px; height:24px; object-fit:contain; opacity:.58; }
+.credit-marks img:last-child { width:36px; }
+.station .hardware { bottom:132px; }
+.station .status { bottom:118px; }
+.vault-content { min-height:calc(100svh - 110px); display:grid; place-content:center; gap:12px; padding:32px; color:#690e12; text-align:center; font-family:"Lucida Console","Courier New",monospace; letter-spacing:.15em; }
+.vault-content p { margin:0; font-size:.58rem; }
+.vault-content h1 { margin:0; color:#a5a5a5; font-size:clamp(1rem,3vw,1.8rem); }
+.vault-empty { margin-top:20px; padding:28px; border:1px solid #2b2b2b; background:#050505; color:#4e4e4e; font-size:.62rem; }
+.access-timer { margin:14px 0 0; color:#6f0f14; text-align:center; font-size:.56rem; letter-spacing:.15em; }
+.access-timer span { color:var(--red); }
+.dpad-panel.is-denied { animation:denied-shake .42s steps(5,end); }
+.record-indicator.is-offline { color:#555; }
+.record-indicator.is-offline .record-lamp { border-color:#333; background:#171717; box-shadow:none; animation:none; }
+.glow.is-playing { animation:glow-pulse 2.8s ease-in-out infinite; }
+
+/* Equal-size notes with three different dance paths */
+.music-note { width:26px; height:26px; object-fit:contain; }
+.gramophone-stage.is-playing .note-one { animation:note-dance-one 3.9s ease-in-out infinite; }
+.gramophone-stage.is-playing .note-two { animation:note-dance-two 4.6s ease-in-out 1.25s infinite; }
+.gramophone-stage.is-playing .note-three { animation:note-dance-three 4.2s ease-in-out 2.5s infinite; }
+@keyframes glow-pulse { 0%,100% { scale:.94; opacity:.68; } 50% { scale:1.1; opacity:1; } }
+@keyframes note-dance-one { 0%{opacity:0;translate:0 0;rotate:-12deg;scale:.82} 15%{opacity:1} 40%{translate:-24px -48px;rotate:18deg} 68%{translate:8px -98px;rotate:-20deg} 100%{opacity:0;translate:-52px -170px;rotate:20deg;scale:1.05} }
+@keyframes note-dance-two { 0%{opacity:0;translate:0 0;rotate:12deg;scale:.82} 18%{opacity:.95} 45%{translate:28px -56px;rotate:-18deg} 72%{translate:-10px -112px;rotate:24deg} 100%{opacity:0;translate:45px -182px;rotate:-12deg;scale:1.05} }
+@keyframes note-dance-three { 0%{opacity:0;translate:0 0;rotate:0;scale:.82} 12%{opacity:.9} 35%{translate:-16px -42px;rotate:25deg} 62%{translate:22px -94px;rotate:-24deg} 82%{translate:-20px -138px;rotate:18deg} 100%{opacity:0;translate:8px -190px;rotate:0;scale:1.05} }
+@keyframes denied-shake { 0%,100%{translate:0} 25%{translate:-8px} 50%{translate:8px} 75%{translate:-5px} }
+
+@media(max-width:650px){
+  .portal-footer{height:88px;grid-template-columns:76px 1fr 76px;padding:0 8px 6px}
+  .portal-logo{width:72px;height:75px}
+  .credit-stack{font-size:.36rem;letter-spacing:.045em;gap:2px;white-space:normal}
+  .credit-marks img{width:18px;height:18px}.credit-marks img:last-child{width:27px}
+  .route-arrow{width:34px;height:68px;font-size:1rem}
+  .station .hardware{bottom:98px}.station .status{bottom:91px}
+  .dpad-panel{width:min(94vw,390px)}
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Super Secret Sound Station — live radio.">
+  <title>Super Secret Sound Station</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body data-page="station">
+  <img id="customCursor" class="custom-cursor" src="ugz_cursor.png" alt="" aria-hidden="true">
+  <main class="station">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="record-indicator is-offline" id="recordIndicator" role="status" aria-live="polite">
+      <span class="record-lamp"></span><span id="broadcastText">OFF AIR</span>
+    </div>
+    <button id="gramophoneButton" class="gramophone-hitbox" type="button" aria-label="Toggle radio station" aria-pressed="false"></button>
+    <div id="gramophoneStage" class="gramophone-stage" aria-hidden="true">
+      <img class="gramophone" src="gramophonenobg.gif" alt="" draggable="false">
+      <div class="music-notes">
+        <img class="music-note note-one" src="musicnot1.png" alt="" draggable="false">
+        <img class="music-note note-two" src="musicnot2.png" alt="" draggable="false">
+        <img class="music-note note-three" src="musicnot3.png" alt="" draggable="false">
+      </div>
+    </div>
+    <section class="hardware" aria-label="Radio controls">
+      <label class="volume-control" for="volume"><span>VOLUME</span><span id="volumeKnob" class="volume-knob" aria-hidden="true"><i></i></span><input id="volume" type="range" min="0" max="100" value="75" aria-label="Volume"></label>
+    </section>
+    <span id="playerStatus" class="status" role="status" aria-live="polite">READY</span>
+    <audio id="radioPlayer" preload="none" src="https://s12.myradiostream.com:19856/listen.mp3"></audio>
+  </main>
+  <button class="route-arrow route-left home-trigger" type="button" aria-label="Return to the beginning">&#10094;</button>
+  <button class="route-arrow route-right access-trigger" type="button" data-destination="vault" aria-label="Find the vault">&#10095;</button>
+  <footer class="portal-footer" aria-label="Site access and credits">
+    <button class="portal-logo home-trigger" type="button" aria-label="Return to the beginning"><img src="Hat_tip_logo.png" alt=""></button>
+    <div class="credit-stack"><span>Powered By: <strong>PIXIECO&trade;</strong></span><span>ART BY <strong>@wirekittie</strong></span><span class="credit-marks"><img src="pixieco-logo.png" alt="PIXIECO logo"><img src="wirekittie-logo.png" alt="Wire Kittie logo"></span></div>
+    <button class="portal-logo portal-logo-mirrored access-trigger" type="button" data-destination="vault" aria-label="Enter vault code"><img src="Hat_tip_logo.png" alt=""></button>
+  </footer>
+  <dialog id="dpadPanel" class="dpad-panel" aria-labelledby="dpadTitle">
+    <form method="dialog" class="dpad-shell"><div class="dpad-heading"><h2 id="dpadTitle">WHAT IS THIS?</h2><button class="dpad-close" value="close" aria-label="Close">&times;</button></div><div class="access-timer"><span id="timerText">10.0</span> SECONDS</div><output id="dpadReadout" class="dpad-readout" aria-live="polite">CHOOSE A PATH.</output><div class="dpad-controls" aria-label="Directional code controls"><button type="button" class="dpad-key dpad-up" data-direction="UP" aria-label="Up">&#9650;</button><button type="button" class="dpad-key dpad-left" data-direction="LEFT" aria-label="Left">&#9664;</button><span class="dpad-center"></span><button type="button" class="dpad-key dpad-right" data-direction="RIGHT" aria-label="Right">&#9654;</button><button type="button" class="dpad-key dpad-down" data-direction="DOWN" aria-label="Down">&#9660;</button></div><button id="dpadReset" class="dpad-reset" type="button">CLEAR CODE</button></form>
+  </dialog>
+</body>
+</html>
