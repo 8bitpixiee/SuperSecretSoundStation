@@ -4,6 +4,13 @@ const status = document.getElementById("playerStatus");
 const audio = document.getElementById("radioPlayer");
 const volume = document.getElementById("volume");
 const knob = document.getElementById("volumeKnob");
+const customCursor = document.getElementById("customCursor");
+const dpadOpen = document.getElementById("dpadOpen");
+const dpadPanel = document.getElementById("dpadPanel");
+const dpadReadout = document.getElementById("dpadReadout");
+const dpadReset = document.getElementById("dpadReset");
+const dpadKeys = document.querySelectorAll(".dpad-key");
+const dpadSequence = [];
 
 audio.volume = Number(volume.value) / 100;
 
@@ -42,4 +49,29 @@ volume.addEventListener("input", updateVolume);
 volume.addEventListener("change", updateVolume);
 audio.addEventListener("pause", () => setPlaying(false));
 audio.addEventListener("error", () => { setPlaying(false); status.textContent = "NO SIGNAL"; });
+
+if (window.matchMedia("(pointer:fine)").matches) {
+  document.body.classList.add("cursor-ready");
+  document.addEventListener("pointermove", (event) => {
+    customCursor.style.left = `${event.clientX}px`;
+    customCursor.style.top = `${event.clientY}px`;
+    customCursor.style.opacity = "1";
+  });
+  document.documentElement.addEventListener("mouseleave", () => {
+    customCursor.style.opacity = "0";
+  });
+}
+
+dpadOpen.addEventListener("click", () => dpadPanel.showModal());
+dpadKeys.forEach((key) => {
+  key.addEventListener("click", () => {
+    dpadSequence.push(key.dataset.direction);
+    if (dpadSequence.length > 8) dpadSequence.shift();
+    dpadReadout.textContent = dpadSequence.join("  ") || "_ _ _ _ _ _ _ _";
+  });
+});
+dpadReset.addEventListener("click", () => {
+  dpadSequence.length = 0;
+  dpadReadout.textContent = "_ _ _ _ _ _ _ _";
+});
 updateVolume();
