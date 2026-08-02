@@ -59,6 +59,11 @@ body.cursor-ready,.cursor-ready button,.cursor-ready input,.cursor-ready label {
 .dpad-key:active { translate:2px 2px; color:var(--red); border-color:#751015; box-shadow:inset 0 0 10px rgb(255 0 8 / 24%); }
 .dpad-up { grid-area:1/2; }.dpad-left { grid-area:2/1; }.dpad-center { grid-area:2/2; background:#111; border:2px solid #333; }.dpad-right { grid-area:2/3; }.dpad-down { grid-area:3/2; }
 .dpad-reset { display:block; margin:20px auto 0; min-width:132px; padding:10px 12px; color:#9b171c; font-size:.58rem; letter-spacing:.13em; }
+.settings-passcode { margin:20px 0 4px; padding:16px; border:1px solid #4d0b0e; background:#020202; text-align:center; }
+.settings-passcode label { display:block; margin-bottom:10px; color:#8e1116; font-size:.56rem; letter-spacing:.16em; }
+.settings-passcode input { width:100%; padding:11px; border:2px inset #333; outline:0; background:#080808; color:#d0d0d0; font:700 .72rem "Lucida Console","Courier New",monospace; letter-spacing:.1em; text-align:center; }
+.settings-passcode input:focus { border-color:#6e1014; box-shadow:0 0 12px rgb(255 0 8 / 18%); }
+.settings-passcode button { margin-top:12px; min-width:112px; padding:9px; border:2px solid #444; background:#111; color:#9b171c; font:700 .56rem "Lucida Console","Courier New",monospace; letter-spacing:.13em; }
 @keyframes record-blink { 50% { opacity:.22; box-shadow:none; } }
 @keyframes gramophone-breathe { 0%,100% { scale:1; } 50% { scale:1.06; } }
 @keyframes note-float { 0% { opacity:0; translate:0 0; scale:.65; rotate:-8deg; } 12% { opacity:.9; } 72% { opacity:.75; } 100% { opacity:0; translate:-95px -165px; scale:1.15; rotate:12deg; } }
@@ -80,7 +85,9 @@ body.cursor-ready,.cursor-ready button,.cursor-ready input,.cursor-ready label {
 .portal-logo:focus-visible { outline:1px dashed #8e1116; outline-offset:3px; }
 .portal-logo-mirrored { justify-self:end; }
 .portal-logo-mirrored img { transform:scaleX(-1); }
-.credit-stack { align-self:end; padding-bottom:4px; display:grid; justify-items:center; gap:4px; color:#555; text-align:center; white-space:nowrap; font:700 clamp(.48rem,.72vw,.64rem) "Lucida Console","Courier New",monospace; letter-spacing:.12em; text-transform:uppercase; text-shadow:2px 2px 0 #111; pointer-events:auto; }
+.credit-stack { align-self:end; padding:0 0 4px; border:0; background:transparent; display:grid; justify-items:center; gap:4px; color:#555; text-align:center; white-space:nowrap; font:700 clamp(.48rem,.72vw,.64rem) "Lucida Console","Courier New",monospace; letter-spacing:.12em; text-transform:uppercase; text-shadow:2px 2px 0 #111; pointer-events:auto; }
+.credit-stack:hover,.credit-stack:focus-visible { color:#888; outline:none; }
+.credit-stack:focus-visible { text-shadow:0 0 8px #8e1116; }
 .credit-stack strong { color:#8e1116; font-weight:inherit; }
 .credit-marks { display:flex; align-items:center; justify-content:center; gap:8px; }
 .credit-marks img { width:24px; height:24px; object-fit:contain; opacity:.58; }
@@ -91,6 +98,12 @@ body.cursor-ready,.cursor-ready button,.cursor-ready input,.cursor-ready label {
 .vault-content p { margin:0; font-size:.58rem; }
 .vault-content h1 { margin:0; color:#a5a5a5; font-size:clamp(1rem,3vw,1.8rem); }
 .vault-empty { margin-top:20px; padding:28px; border:1px solid #2b2b2b; background:#050505; color:#4e4e4e; font-size:.62rem; }
+.settings-console { min-height:calc(100svh - 110px); display:grid; place-content:center; justify-items:center; gap:10px; padding:32px; color:#690e12; text-align:center; font-family:"Lucida Console","Courier New",monospace; letter-spacing:.14em; }
+.settings-console>p { margin:0; font-size:.55rem; }.settings-console>h1 { margin:0 0 20px; color:#aaa; font-size:clamp(1rem,3vw,1.7rem); }
+.settings-module { width:min(88vw,470px); padding:26px; border:2px solid #333; background:#060606; box-shadow:inset 0 0 0 3px #000,0 0 24px rgb(255 0 8 / 12%); }
+.settings-module h2 { margin:0 0 20px; color:#8e1116; font-size:.7rem; }.settings-state { display:flex; justify-content:center; align-items:center; gap:9px; color:#555; font-size:.55rem; }
+.settings-light { width:11px; height:11px; border-radius:50%; background:#242424; border:2px solid #444; }.settings-toggle { display:block; width:160px; margin:24px auto 15px; padding:13px; border:3px solid #3d3d3d; background:#111; color:#555; font:700 .62rem "Lucida Console","Courier New",monospace; letter-spacing:.13em; }.settings-module small { color:#444; font-size:.48rem; line-height:1.7; }
+.settings-state.is-live { color:#b8b8b8; }.settings-state.is-live .settings-light { background:var(--red); border-color:#65090d; box-shadow:0 0 11px var(--red); }.settings-toggle:not(:disabled) { color:#b31920; border-color:#555; }
 .access-timer { margin:14px 0 0; color:#6f0f14; text-align:center; font-size:.56rem; letter-spacing:.15em; }
 .access-timer span { color:var(--red); }
 .dpad-panel.is-denied { animation:denied-shake .42s steps(5,end); }

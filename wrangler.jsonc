@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "supersecretsoundstation",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/station.html", "/vault.html", "/settings.html"]
+  },
+  "kv_namespaces": [
+    {
+      "binding": "STATION_STATE"
+    }
+  ]
+}

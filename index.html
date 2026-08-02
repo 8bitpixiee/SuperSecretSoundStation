@@ -20,11 +20,11 @@
     <button class="portal-logo access-trigger" type="button" data-destination="station" aria-label="Enter station code">
       <img src="Hat_tip_logo.png" alt="">
     </button>
-    <div class="credit-stack">
+    <button class="credit-stack access-trigger" type="button" data-destination="settings" aria-label="Enter settings code">
       <span>Powered By: <strong>PIXIECO&trade;</strong></span>
       <span>ART BY <strong>@wirekittie</strong></span>
       <span class="credit-marks"><img src="pixieco-logo.png" alt="PIXIECO logo"><img src="wirekittie-logo.png" alt="Wire Kittie logo"></span>
-    </div>
+    </button>
     <button class="portal-logo portal-logo-mirrored access-trigger" type="button" data-destination="vault" aria-label="Enter vault code">
       <img src="Hat_tip_logo.png" alt="">
     </button>
@@ -41,6 +41,11 @@
         <span class="dpad-center" aria-hidden="true"></span>
         <button type="button" class="dpad-key dpad-right" data-direction="RIGHT" aria-label="Right">&#9654;</button>
         <button type="button" class="dpad-key dpad-down" data-direction="DOWN" aria-label="Down">&#9660;</button>
+      </div>
+      <div id="settingsPasscode" class="settings-passcode" hidden>
+        <label for="settingsPasscodeInput">SECOND KEY</label>
+        <input id="settingsPasscodeInput" type="password" autocomplete="current-password" maxlength="128">
+        <button id="settingsSubmit" type="button">VERIFY</button>
       </div>
       <button id="dpadReset" class="dpad-reset" type="button">CLEAR CODE</button>
     </form>

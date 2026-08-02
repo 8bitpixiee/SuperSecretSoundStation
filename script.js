@@ -1,10 +1,27 @@
-const ACCESS_CODES = {
-  station: ["LEFT","RIGHT","LEFT","RIGHT","RIGHT","DOWN","UP","UP","DOWN","DOWN","DOWN","UP"],
-  vault: ["UP","DOWN","DOWN","UP","RIGHT","DOWN","RIGHT","UP","LEFT","RIGHT","DOWN","UP","UP"]
-};
 const FAILURE_MESSAGE = "If you don't know where you want to go, then it doesn't matter which path you take.";
 const page = document.body.dataset.page;
 const customCursor = document.getElementById("customCursor");
+let broadcastIsLive = false;
+
+function renderBroadcastStatus() {
+  const indicator = document.getElementById("recordIndicator");
+  const text = document.getElementById("broadcastText");
+  if (!indicator || !text) return;
+  indicator.classList.toggle("is-offline", !broadcastIsLive);
+  text.textContent = broadcastIsLive ? "Broadcasting LIVE, from somewhere..." : "OFF AIR";
+}
+
+async function refreshBroadcastStatus() {
+  try {
+    const response = await fetch("/api/live", { cache: "no-store" });
+    if (!response.ok) throw new Error("Status unavailable");
+    const data = await response.json();
+    broadcastIsLive = data.live === true;
+  } catch {
+    broadcastIsLive = false;
+  }
+  renderBroadcastStatus();
+}
 
 if (window.matchMedia("(pointer:fine)").matches && customCursor) {
   document.body.classList.add("cursor-ready");
@@ -26,6 +43,10 @@ if (panel) {
   const timerText = document.getElementById("timerText");
   const resetButton = document.getElementById("dpadReset");
   const keys = document.querySelectorAll(".dpad-key");
+  const dpadControls = panel.querySelector(".dpad-controls");
+  const passcodeBox = document.getElementById("settingsPasscode");
+  const passcodeInput = document.getElementById("settingsPasscodeInput");
+  const passcodeSubmit = document.getElementById("settingsSubmit");
   let destination = "station";
   let sequence = [];
   let startedAt = 0;
@@ -38,6 +59,10 @@ if (panel) {
     timer = null;
     timerText.textContent = "20.0";
     readout.textContent = message;
+    dpadControls.hidden = false;
+    resetButton.hidden = false;
+    passcodeBox.hidden = true;
+    passcodeInput.value = "";
   }
 
   function fail() {
@@ -58,7 +83,7 @@ if (panel) {
   document.querySelectorAll(".access-trigger").forEach(button => {
     button.addEventListener("click", () => {
       destination = button.dataset.destination;
-      title.textContent = destination === "vault" ? "VAULT FREQUENCY" : "STATION FREQUENCY";
+      title.textContent = destination === "vault" ? "VAULT FREQUENCY" : destination === "settings" ? "CONTROL FREQUENCY" : "STATION FREQUENCY";
       resetInput();
       if (customCursor) panel.appendChild(customCursor);
       panel.showModal();
@@ -69,17 +94,33 @@ if (panel) {
     if (!startedAt) startTimer();
     sequence.push(direction);
     readout.textContent = sequence.map(direction => direction[0]).join(" ");
-    const expected = ACCESS_CODES[destination];
-    if (sequence.length === expected.length) {
-      if (sequence.every((direction, index) => direction === expected[index])) {
-        clearInterval(timer);
-        sessionStorage.setItem(`access_${destination}`, "granted");
-        readout.textContent = "PATH FOUND.";
-        setTimeout(() => location.href = `${destination}.html`, 450);
+    if (sequence.length === 8) {
+      clearInterval(timer);
+      timer = null;
+      if (destination === "settings") {
+        dpadControls.hidden = true;
+        resetButton.hidden = true;
+        passcodeBox.hidden = false;
+        passcodeInput.focus();
       } else {
-        fail();
+        submitUnlock();
       }
     }
+  }
+
+  async function submitUnlock(passcode = "") {
+    readout.textContent = "SEARCHING...";
+    try {
+      const response = await fetch("/api/unlock", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ destination, sequence, passcode })
+      });
+      const result = await response.json();
+      if (!response.ok) { fail(); readout.textContent = result.error || FAILURE_MESSAGE; return; }
+      readout.textContent = "PATH FOUND.";
+      setTimeout(() => location.href = `${destination}.html`, 450);
+    } catch { fail(); }
   }
 
   keys.forEach(key => key.addEventListener("click", () => enterDirection(key.dataset.direction)));
@@ -92,14 +133,13 @@ if (panel) {
     enterDirection(direction);
   });
   resetButton.addEventListener("click", () => resetInput());
+  passcodeSubmit.addEventListener("click", () => submitUnlock(passcodeInput.value));
+  passcodeInput.addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); submitUnlock(event.currentTarget.value); } });
   panel.addEventListener("close", () => {
     resetInput();
     if (customCursor) document.body.prepend(customCursor);
   });
 }
-
-if (page === "station" && sessionStorage.getItem("access_station") !== "granted") location.replace("index.html");
-if (page === "vault" && sessionStorage.getItem("access_vault") !== "granted") location.replace("index.html");
 
 const gramophone = document.getElementById("gramophoneButton");
 if (gramophone) {
@@ -115,8 +155,6 @@ if (gramophone) {
     gramophone.setAttribute("aria-pressed", String(playing));
     stage.classList.toggle("is-playing", playing);
     document.querySelector(".glow")?.classList.toggle("is-playing", playing);
-    indicator.classList.toggle("is-offline", !playing);
-    broadcastText.textContent = playing ? "Broadcasting LIVE, from somewhere..." : "OFF AIR";
     status.textContent = playing ? "LIVE SIGNAL" : "READY";
   }
   async function playStation() { if (!audio.paused) return; status.textContent = "TUNING..."; try { await audio.play(); setPlaying(true); } catch (error) { console.error(error); setPlaying(false); status.textContent = "NO SIGNAL"; } }
@@ -128,4 +166,45 @@ if (gramophone) {
   audio.addEventListener("pause", () => setPlaying(false));
   audio.addEventListener("error", () => { setPlaying(false); status.textContent = "NO SIGNAL"; });
   updateVolume(); setPlaying(false);
+  refreshBroadcastStatus();
+  setInterval(refreshBroadcastStatus, 15000);
+}
+
+if (page === "settings") {
+  const liveToggle = document.getElementById("liveToggle");
+  const state = document.getElementById("settingsState");
+  const stateText = document.getElementById("settingsStateText");
+
+  function renderSettingsState() {
+    state.classList.toggle("is-live", broadcastIsLive);
+    stateText.textContent = broadcastIsLive ? "BROADCASTING LIVE" : "OFF AIR";
+    liveToggle.textContent = broadcastIsLive ? "GO OFF AIR" : "GO LIVE";
+    liveToggle.disabled = false;
+  }
+
+  async function loadSettingsState() {
+    await refreshBroadcastStatus();
+    renderSettingsState();
+  }
+
+  liveToggle.addEventListener("click", async () => {
+    liveToggle.disabled = true;
+    stateText.textContent = "UPDATING...";
+    try {
+      const response = await fetch("/api/live", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ live:!broadcastIsLive })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Update failed");
+      broadcastIsLive = result.live === true;
+      renderSettingsState();
+    } catch (error) {
+      stateText.textContent = error.message.toUpperCase();
+      liveToggle.disabled = false;
+    }
+  });
+
+  loadSettingsState();
 }
